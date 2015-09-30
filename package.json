@@ -1,0 +1,20 @@
+{
+  "devDependencies": {
+    "clean-css": "latest",
+    "html-minifier": "latest",
+    "http-server": "latest",
+    "livereload": "latest",
+    "onchange": "latest",
+    "opener": "latest",
+    "parallelshell": "latest",
+    "uglify-js": "latest"
+  },
+  "engines": {
+    "node": "^4.0.0"
+  },
+  "private": true,
+  "os": [
+    "darwin",
+    "linux"
+  ]
+}
