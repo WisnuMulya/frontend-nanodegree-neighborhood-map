@@ -2,7 +2,7 @@
 
 // Run function when page loaded to initialize app
 $(function() {
-  if (!localStorage.locations || (JSON.parse(localStorage.locations).length < 15)) {
+  if (!localStorage.locations || (JSON.parse(localStorage.locations).length < 16)) {
     createLocalStorage();
     setTimeout(init, 1000); // Wait for the localStorage to be built
   } else {
@@ -30,7 +30,8 @@ function createLocalStorage() {
     {"name": "Plaza Indonesia Mall", "type": "mall"},
     {"name": "Grand Indonesia Mall", "type": "mall"},
     {"name": "Dunia Fantasi", "type": "theme-park"},
-    {"name": "Taman Safari", "type": "zoo"}
+    {"name": "Taman Safari", "type": "zoo"},
+    {"name": "Taman Honda Tebet", "type": "park"}
   ];
 
   // Building local storage by using Google Geocoding API for requesting location's lat & lng
