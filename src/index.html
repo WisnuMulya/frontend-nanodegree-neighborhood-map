@@ -41,7 +41,7 @@
       <h2>Spots:</h2>
       <div id="navigation-list-container">
         <ul id="navigation-list" data-bind="foreach: spots">
-          <li class="navigation-list-item" data-bind="text: name, click: $parent.infowindowOpen"></li>
+          <li class="navigation-list-item" data-bind="text: name, click: $parent.infowindowOpen, css: { selected: $parent.selectedSpot() === $data }"></li>
         </ul>
       </div>
     </div>

@@ -64,18 +64,19 @@ function init() {
     content: 'Loading...'
   });
 
-  // Function to show infowindow content when triggered
-  var infowindowOpen = function(locName, marker) {
-    map.panTo(marker.getPosition())
-    infowindow.open(map, marker);
+  // Function to show infowindow content when triggered and select list item in nav
+  var infowindowOpen = function(spotObject, vm) {
+    map.panTo(spotObject.marker.getPosition())
+    infowindow.open(map, spotObject.marker);
+    vm.selectedSpot(spotObject);
     infowindow.setContent('Loading...');
 
     // Requesting images from Flickr
     $.getJSON('https://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?', {
       format: 'json',
-      tags: locName
+      tags: spotObject.name
     }, function(data) {
-      var photos = '<h1>' + locName + '</h1>';
+      var photos = '<h1>' + spotObject.name + '</h1>';
 
       data.items.forEach(function(photo){
         photos = photos + '<a class="flick-img-container" target="_blank" href="' + photo.link +'"><img class="flickr-img" src="' + photo.media.m + '"></a>';
@@ -83,12 +84,12 @@ function init() {
 
       infowindow.setContent(photos);
     }).error(function() {
-      infowindow.setContent('<h1>' + locName + '</h1><p>There is something wrong; Flickr could not be loaded</p>')
+      infowindow.setContent('<h1>' + spotObject.name + '</h1><p>There is something wrong; Flickr could not be loaded</p>')
     });
   };
 
   // Pseudoclassical class for initializing each spot
-  var Spot = function(spotObj) {
+  var Spot = function(spotObj, vm) {
     this.name = spotObj.name;
     this.position = spotObj.position;
     this.type = spotObj.type;
@@ -101,11 +102,11 @@ function init() {
     });
 
     // Listen to click to open infowindow
-    this.marker.addListener('click', (function(nameCopy, markerCopy) {
+    this.marker.addListener('click', (function(spot, vmCopy) {
       return function() {
-        infowindowOpen(nameCopy, markerCopy);
+        infowindowOpen(spot, vmCopy);
       };
-    })(this.name, this.marker));
+    })(this, vm));
   };
 
   // Object to initialize knockout.js functionality
@@ -113,16 +114,18 @@ function init() {
     var self = this;
 
     self.query = ko.observable(''); // Value of navigation-search
+    self.selectedSpot = ko.observable(null);
+    self.filter = ko.observable('all');
+
     self.jakartaSpots = ko.computed(function() {
       var localStorageCopy = JSON.parse(localStorage.locations);
       var array = [];
       localStorageCopy.forEach(function(spot) {
-        array.push(new Spot(spot));
+        array.push(new Spot(spot, self));
       });
 
       return array;
     });
-    self.filter = ko.observable('all');
 
     // Create search functionality on spots
     self.spots = ko.computed(function() {
@@ -145,8 +148,13 @@ function init() {
 
     // Callback to click of navigation list item
     self.infowindowOpen = function(spotObj) {
-      infowindowOpen(spotObj.name, spotObj.marker);
+      infowindowOpen(spotObj, self);
     };
+
+    // Callback to make selectedSpot observable to be null when infowindow is closed
+    google.maps.event.addListener(infowindow, 'closeclick', function() {
+      self.selectedSpot(null);
+    });
   };
 
   ko.applyBindings(new viewModel());
