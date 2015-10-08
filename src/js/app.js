@@ -113,15 +113,16 @@ function init() {
     var self = this;
 
     self.query = ko.observable(''); // Value of navigation-search
-    self.localStorage = ko.computed(function() {
-      return JSON.parse(localStorage.locations);
-    });
-    self.jakartaSpots = ko.observableArray([]);
-    self.filter = ko.observable('all');
+    self.jakartaSpots = ko.computed(function() {
+      var localStorageCopy = JSON.parse(localStorage.locations);
+      var array = [];
+      localStorageCopy.forEach(function(spot) {
+        array.push(new Spot(spot));
+      });
 
-    self.localStorage().forEach(function(spot) {
-      self.jakartaSpots.push(new Spot(spot));
+      return array;
     });
+    self.filter = ko.observable('all');
 
     // Create search functionality on spots
     self.spots = ko.computed(function() {
