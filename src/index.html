@@ -7,38 +7,47 @@
     <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
-    <div id="map"></div>
+    <div id="map"><h1>Loading...</h1></div>
     <div id="navigation">
-      <h1>Jakarta Spot</h1>
-      <input placeholder="Search" id="navigation-search" type="text" data-bind="value: query, valueUpdate: 'keyup'" autocomplete="off">
+      <h1>Jakarta Spots</h1>
+      <input placeholder="Search spots" id="navigation-search" type="text" data-bind="value: query, valueUpdate: 'keyup'" autocomplete="off">
       <h2>Filter options:</h2>
-      <div class="filter-option">
-        <input type="radio" value="all" name="filter" id="all" data-bind="checked: filter">
-        <label for="all">All</label>
+      <div id="navigation-filter">
+        <div class="filter-option">
+          <input type="radio" value="all" name="filter" id="all" data-bind="checked: filter">
+          <label for="all">All</label>
+        </div>
+        <div class="filter-option">
+          <input type="radio" value="mall" name="filter" id="mall" data-bind="checked: filter">
+          <label for="mall">Mall</label>
+        </div>
+        <div class="filter-option">
+          <input type="radio" value="theme-park" name="filter" id="theme-park" data-bind="checked: filter">
+          <label for="theme-park">Theme Park</label>
+        </div>
+        <div class="filter-option">
+          <input type="radio" value="landmark" name="filter" id="landmark" data-bind="checked: filter">
+          <label for="landmark">Landmark</label>
+        </div>
+        <div class="filter-option">
+          <input type="radio" value="zoo" name="filter" id="zoo" data-bind="checked: filter">
+          <label for="zoo">Zoo</label>
+        </div>
+        <div class="filter-option">
+          <input type="radio" value="park" name="filter" id="park" data-bind="checked: filter">
+          <label for="park">Park</label>
+        </div>
       </div>
-      <div class="filter-option">
-        <input type="radio" value="mall" name="filter" id="mall" data-bind="checked: filter">
-        <label for="mall">Mall</label>
+      <h2>Spots:</h2>
+      <div id="navigation-list-container">
+        <ul id="navigation-list" data-bind="foreach: spots">
+          <li class="navigation-list-item" data-bind="text: name, click: $parent.infowindowOpen"></li>
+        </ul>
       </div>
-      <div class="filter-option">
-        <input type="radio" value="theme-park" name="filter" id="theme-park" data-bind="checked: filter">
-        <label for="theme-park">Theme Park</label>
-      </div>
-      <div class="filter-option">
-        <input type="radio" value="landmark" name="filter" id="landmark" data-bind="checked: filter">
-        <label for="landmark">Landmark</label>
-      </div>
-      <div class="filter-option">
-        <input type="radio" value="zoo" name="filter" id="zoo" data-bind="checked: filter">
-        <label for="zoo">Zoo</label>
-      </div>
-      <ul id="navigation-list" data-bind="foreach: spots">
-        <li class="navigation-list-item" data-bind="text: name, click: $parent.infowindowOpen"></li>
-      </ul>
     </div>
   </body>
   <script src="js/lib/jquery/jquery-1.11.3.min.js"></script>
   <script src="js/lib/knockout/knockout-3.3.0.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnYsGauLxbF7YdoGPkRUStRrouANROr1s"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4SBS-k9EzqVIQS67qjljL-Q5wlzftYY4"></script>
   <script async defer src="js/app.js"></script>
 </html>

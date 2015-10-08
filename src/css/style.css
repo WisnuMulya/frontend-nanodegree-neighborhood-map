@@ -14,6 +14,7 @@ h1 {
 
 h2 {
   font: bold 1em sans-serif;
+  margin: 10px;
 }
 
 #navigation {
@@ -21,11 +22,15 @@ h2 {
   color: white;
   width: 25%;
   height: 100vh;
-  overflow: scroll;
 }
 
 #map {
   width: 75%;
+}
+
+#navigation-filter {
+  border: 1px solid white;
+  margin: 10px;
 }
 
 #navigation-search {
@@ -36,10 +41,19 @@ h2 {
   padding: 0 10px;
 }
 
+#navigation-list-container {
+  height: 60vh;
+  border: 1px solid white;
+  overflow: scroll;
+  margin: 10px;
+}
+
 #navigation-list {
+  margin: 0;
   padding: 0;
   list-style: none;
 }
+
 
 .filter-option {
   min-width: 30%;
