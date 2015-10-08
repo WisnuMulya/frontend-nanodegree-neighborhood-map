@@ -16,12 +16,12 @@ function createLocalStorage() {
   var localStorageObject;
 
   var places = [
-    {"name": "Museum Satria Mandala", "type": "landmark"},
+    {"name": "Satriamandala Museum", "type": "landmark"},
     {"name": "Taman Suropati", "type": "park"},
     {"name": "Taman Menteng", "type": "park"},
     {"name": "Gelora Bung Karno", "type": "landmark"},
     {"name": "Monumen Nasional", "type": "landmark"},
-    {"name": "Kebun Binatang Ragunan", "type": "zoo"},
+    {"name": "Ragunan Zoo", "type": "zoo"},
     {"name": "Taman Mini Indonesia Indah", "type": "theme-park"},
     {"name": "Kuningan City Mall", "type": "mall"},
     {"name": "Mall of Indonesia", "type": "mall"},
@@ -46,6 +46,7 @@ function createLocalStorage() {
       console.log('error');
     });
   });
+
 };
 
 
@@ -61,31 +62,58 @@ function init() {
   });
 
   // Initializing infowindow to be shown above the map markers
+  var infowindowElem = '<div id="infowindow-content" data-bind="with: infowindowContent">';
+  infowindowElem += '<h1 data-bind="text: title"></h1>';
+  infowindowElem += '<h2>Wikipedia Description:</h2>';
+  infowindowElem += '<p data-bind="text: wikiDesc"></p>';
+  infowindowElem += '<h2>Flickr Images:</h2>';
+  infowindowElem += '<div data-bind="html: flickrImg"></div></div>';
+
   var infowindow = new google.maps.InfoWindow({
-    content: 'Loading...'
+    content: infowindowElem
   });
 
   // Function to show infowindow content when triggered and select list item in nav
   var infowindowOpen = function(spotObject, vm) {
+    var flickrStrings = '';
     map.panTo(spotObject.marker.getPosition())
     infowindow.open(map, spotObject.marker);
     vm.selectedSpot(spotObject);
-    infowindow.setContent('Loading...');
+    vm.infowindowTitle(spotObject.name);
+
+    // Requesting wikiSpotUrl and wikiDesc
+    var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + spotObject.name + ' &format=json&callback=wikiCallBack';
+
+    $.ajax({
+      url: wikiUrl,
+      dataType: 'jsonp',
+      success: function(data) {
+        if (data[2].length > 0 && data[2][0] !== '') {
+          vm.infowindowWikiDesc(data[2][0]);
+        } else {
+          vm.infowindowWikiDesc('Wikipedia does not have any description about this spot.');
+        }
+      }
+    }).error(function() {
+      vm.infowindowWikiDesc('There is an error on fetching Wikipedia info.');
+    });
 
     // Requesting images from Flickr
     $.getJSON('https://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?', {
       format: 'json',
       tags: spotObject.name
     }, function(data) {
-      var photos = '<h1>' + spotObject.name + '</h1><h2>Images from Flickr:</h2>';
+      if (data.items.length > 0) {
+        data.items.forEach(function(photo){
+          flickrStrings = flickrStrings + '<a class="flick-img-container" target="_blank" href="' + photo.link +'"><img class="flickr-img" src="' + photo.media.m + '"></a>';
+        });
 
-      data.items.forEach(function(photo){
-        photos = photos + '<a class="flick-img-container" target="_blank" href="' + photo.link +'"><img class="flickr-img" src="' + photo.media.m + '"></a>';
-      });
-
-      infowindow.setContent(photos);
+        vm.infowindowFlickr(flickrStrings);
+      } else {
+        vm.infowindowFlickr('Flickr does not have images of this spot.')
+      }
     }).error(function() {
-      infowindow.setContent('<h1>' + spotObject.name + '</h1><h2>Images from Flickr:</h2><p>There is something wrong; Flickr could not be loaded</p>')
+      vm.infowindowFlickr('<p>There is something wrong; Flickr could not be loaded</p>');
     });
   };
 
@@ -126,6 +154,16 @@ function init() {
     self.query = ko.observable(''); // Value of navigation-search
     self.selectedSpot = ko.observable(null);
     self.filter = ko.observable('all');
+    self.infowindowTitle = ko.observable('Loading...');
+    self.infowindowFlickr = ko.observable('Loading...');
+    self.infowindowWikiDesc = ko.observable('Loading...');
+    self.infowindowContent = ko.computed(function() {
+      return {
+        title: self.infowindowTitle(),
+        wikiDesc: self.infowindowWikiDesc(),
+        flickrImg: self.infowindowFlickr()
+      };
+    });
 
     self.jakartaSpots = ko.computed(function() {
       var localStorageCopy = JSON.parse(localStorage.locations);
@@ -166,6 +204,13 @@ function init() {
       self.selectedSpot(null);
     });
   };
-
-  ko.applyBindings(new viewModel());
+  var ifInfowindowLoaded = false;
+  var vmObject = new viewModel();
+  ko.applyBindings(vmObject);
+  google.maps.event.addListener(infowindow, 'domready', function() {
+    if (!ifInfowindowLoaded) {
+      ko.applyBindings(vmObject, document.getElementById('infowindow-content'));
+      ifInfowindowLoaded = true;
+    }
+  });
 }
