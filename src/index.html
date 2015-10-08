@@ -10,12 +10,35 @@
     <div id="map"></div>
     <div id="navigation">
       <h1>Jakarta Spot</h1>
-      <div id="navigation-search"></div>
-      <ul id="navigation-list"></ul>
+      <input placeholder="Search" id="navigation-search" type="text" data-bind="value: query, valueUpdate: 'keyup'" autocomplete="off">
+      <h2>Filter options:</h2>
+      <div class="filter-option">
+        <input type="radio" value="all" name="filter" id="all" data-bind="checked: filter">
+        <label for="all">All</label>
+      </div>
+      <div class="filter-option">
+        <input type="radio" value="mall" name="filter" id="mall" data-bind="checked: filter">
+        <label for="mall">Mall</label>
+      </div>
+      <div class="filter-option">
+        <input type="radio" value="theme-park" name="filter" id="theme-park" data-bind="checked: filter">
+        <label for="theme-park">Theme Park</label>
+      </div>
+      <div class="filter-option">
+        <input type="radio" value="landmark" name="filter" id="landmark" data-bind="checked: filter">
+        <label for="landmark">Landmark</label>
+      </div>
+      <div class="filter-option">
+        <input type="radio" value="zoo" name="filter" id="zoo" data-bind="checked: filter">
+        <label for="zoo">Zoo</label>
+      </div>
+      <ul id="navigation-list" data-bind="foreach: spots">
+        <li class="navigation-list-item" data-bind="text: name, click: $parent.infowindowOpen"></li>
+      </ul>
     </div>
   </body>
   <script src="js/lib/jquery/jquery-1.11.3.min.js"></script>
   <script src="js/lib/knockout/knockout-3.3.0.js"></script>
-  <script src="js/app.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnYsGauLxbF7YdoGPkRUStRrouANROr1s&callback=initMap"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnYsGauLxbF7YdoGPkRUStRrouANROr1s"></script>
+  <script async defer src="js/app.js"></script>
 </html>

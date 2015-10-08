@@ -12,6 +12,10 @@ h1 {
   text-align: center;
 }
 
+h2 {
+  font: bold 1em sans-serif;
+}
+
 #navigation {
   background: #333;
   color: white;
@@ -22,4 +26,48 @@ h1 {
 
 #map {
   width: 75%;
+}
+
+#navigation-search {
+  display: inline-block;
+  width: 100%;
+  height: 2em;
+  font: 1em sans-serif;
+  padding: 0 10px;
+}
+
+#navigation-list {
+  padding: 0;
+  list-style: none;
+}
+
+.filter-option {
+  min-width: 30%;
+  height: 2em;
+  display: inline-block;
+}
+
+.navigation-list-item {
+  border-bottom: 1px solid black;
+  padding: 20px 10px;
+  cursor: pointer;
+}
+
+.navigation-list-item:hover {
+  background: #222;
+}
+
+.flick-img-container {
+  display: inline-block;
+  border: 1px solid black;
+  border-radius: 2px;
+  width: 19%;
+  text-align: center;
+  margin: 5px 1% 0 0;
+  padding: 5px;
+}
+
+.flickr-img {
+  max-height: 50px;
+  max-width: 100%;
 }
