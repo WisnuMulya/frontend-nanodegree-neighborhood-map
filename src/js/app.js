@@ -53,9 +53,6 @@ function init() {
   // Variable to center the position of the map at initialization
   var jakarta = {name: "jakarta", position: {lat: -6.2087634, lng: 106.845599}};
 
-  // Spots to be shown in the view
-  var jakartaSpots = JSON.parse(localStorage.locations);
-
   // Initializing Google Maps
   var map = new google.maps.Map(document.getElementById('map'), {
     center: jakarta.position,
@@ -116,10 +113,13 @@ function init() {
     var self = this;
 
     self.query = ko.observable(''); // Value of navigation-search
+    self.localStorage = ko.computed(function() {
+      return JSON.parse(localStorage.locations);
+    });
     self.jakartaSpots = ko.observableArray([]);
     self.filter = ko.observable('all');
 
-    jakartaSpots.forEach(function(spot) {
+    self.localStorage().forEach(function(spot) {
       self.jakartaSpots.push(new Spot(spot));
     });
 
