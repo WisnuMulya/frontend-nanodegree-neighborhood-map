@@ -94,11 +94,20 @@ function init() {
     this.position = spotObj.position;
     this.type = spotObj.type;
 
+    var icon = {
+      'landmark': 'flag_maps.png',
+      'park': 'parks_maps.png',
+      'mall': 'shopping_maps.png',
+      'zoo': 'horsebackriding_maps.png',
+      'theme-park': 'arts_maps.png'
+    };
+
     // Initializing marker
     this.marker = new google.maps.Marker({
       position: this.position,
       map: null,
-      title: this.name
+      title: this.name,
+      icon: 'https://maps.google.com/mapfiles/kml/shapes/' + icon[this.type]
     });
 
     // Listen to click to open infowindow
