@@ -76,7 +76,7 @@ function init() {
       format: 'json',
       tags: spotObject.name
     }, function(data) {
-      var photos = '<h1>' + spotObject.name + '</h1>';
+      var photos = '<h1>' + spotObject.name + '</h1><h2>Images from Flickr:</h2>';
 
       data.items.forEach(function(photo){
         photos = photos + '<a class="flick-img-container" target="_blank" href="' + photo.link +'"><img class="flickr-img" src="' + photo.media.m + '"></a>';
@@ -84,7 +84,7 @@ function init() {
 
       infowindow.setContent(photos);
     }).error(function() {
-      infowindow.setContent('<h1>' + spotObject.name + '</h1><p>There is something wrong; Flickr could not be loaded</p>')
+      infowindow.setContent('<h1>' + spotObject.name + '</h1><h2>Images from Flickr:</h2><p>There is something wrong; Flickr could not be loaded</p>')
     });
   };
 

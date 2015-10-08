@@ -11,7 +11,7 @@
     <div id="navigation">
       <h1>Jakarta Spots</h1>
       <input placeholder="Search spots" id="navigation-search" type="text" data-bind="value: query, valueUpdate: 'keyup'" autocomplete="off">
-      <h2>Filter options:</h2>
+      <h2 class="navigation-heading">Filter options:</h2>
       <div id="navigation-filter">
         <div class="filter-option">
           <input type="radio" value="all" name="filter" id="all" data-bind="checked: filter">
@@ -38,7 +38,7 @@
           <label for="park">Park</label>
         </div>
       </div>
-      <h2>Spots:</h2>
+      <h2 class="navigation-heading">Spots:</h2>
       <div id="navigation-list-container">
         <ul id="navigation-list" data-bind="foreach: spots">
           <li class="navigation-list-item" data-bind="text: name, click: $parent.infowindowOpen, css: { selected: $parent.selectedSpot() === $data }"></li>

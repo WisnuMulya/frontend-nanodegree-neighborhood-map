@@ -12,16 +12,16 @@ h1 {
   text-align: center;
 }
 
-h2 {
-  font: bold 1em sans-serif;
-  margin: 10px;
-}
-
 #navigation {
   background: #333;
   color: white;
   width: 25%;
   height: 100vh;
+}
+
+.navigation-heading {
+  font: bold 1em sans-serif;
+  margin: 10px;
 }
 
 #map {
@@ -42,7 +42,7 @@ h2 {
 }
 
 #navigation-list-container {
-  height: 60vh;
+  height: 50vh;
   border: 1px solid white;
   overflow: scroll;
   margin: 10px;
@@ -83,7 +83,7 @@ h2 {
 
 .flickr-img {
   max-height: 50px;
-  max-width: 100%;
+  max-width: 100% !important; /* Important is to overwrite third party API stylings */
 }
 
 .selected {
