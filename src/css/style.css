@@ -6,17 +6,31 @@ body {
   display: flex;
   font: 1em sans-serif;
   margin: 0;
+  height: 100vh;
 }
 
 h1 {
   text-align: center;
+  margin: 10px 0;
+}
+
+#map {
+  width: 100%;
 }
 
 #navigation {
-  background: #333;
   color: white;
-  width: 25%;
-  height: 100vh;
+  position: absolute;
+  right: 0;
+  min-width: 30vw;
+  max-width: 275px;
+  max-height: 70vh;
+  padding: 10px;
+}
+
+#title,
+.navigation-heading {
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 
 .navigation-heading {
@@ -24,13 +38,20 @@ h1 {
   margin: 10px;
 }
 
-#map {
-  width: 75%;
+#navigation-filter,
+#navigation-list-container {
+  border-radius: 2px;
+  background: rgba(136, 136, 136, .8);
 }
 
 #navigation-filter {
-  border: 1px solid white;
-  margin: 10px;
+  padding: 5px;
+}
+
+.filter-option {
+  min-width: 45%;
+  height: 2em;
+  display: inline-block;
 }
 
 #navigation-search {
@@ -43,9 +64,7 @@ h1 {
 
 #navigation-list-container {
   height: 50vh;
-  border: 1px solid white;
   overflow: scroll;
-  margin: 10px;
 }
 
 #navigation-list {
@@ -54,21 +73,14 @@ h1 {
   list-style: none;
 }
 
-
-.filter-option {
-  min-width: 30%;
-  height: 2em;
-  display: inline-block;
-}
-
 .navigation-list-item {
-  border-bottom: 1px solid black;
-  padding: 20px 10px;
+  border-bottom: 1px solid rgba(51, 51, 51, .8);
+  padding: 15px 10px;
   cursor: pointer;
 }
 
 .navigation-list-item:hover {
-  background: #222;
+  background: rgba(119, 119, 119, .8);
 }
 
 #infowindow-content {
@@ -91,7 +103,13 @@ h1 {
   max-width: 100% !important; /* Important is to overwrite third party API stylings */
 }
 
+/* Class to be toggled inside navigation-list-item when clicked */
 .selected {
   padding-left: 20px;
-  background: #222;
+  background: rgba(119, 119, 119, .8);
+}
+
+/* Class to be toggled when hamburger icon is clicked */
+.hidden {
+  display: none;
 }

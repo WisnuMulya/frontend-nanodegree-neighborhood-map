@@ -9,41 +9,49 @@
   <body>
     <div id="map"><h1>Loading...</h1></div>
     <div id="navigation">
-      <h1>Jakarta Spots</h1>
-      <input placeholder="Search spots" id="navigation-search" type="text" data-bind="value: query, valueUpdate: 'keyup'" autocomplete="off">
-      <h2 class="navigation-heading">Filter options:</h2>
-      <div id="navigation-filter">
-        <div class="filter-option">
-          <input type="radio" value="all" name="filter" id="all" data-bind="checked: filter">
-          <label for="all">All</label>
+      <h1 id="title"><span data-bind="click: toggleMenu">&#9776;</span> Jakarta Spots</h1>
+
+      <div id="navigation-menu" data-bind="css: menuClass">
+        <input placeholder="Search spots" id="navigation-search" type="text" data-bind="value: query, valueUpdate: 'keyup'" autocomplete="off">
+
+        <h2 class="navigation-heading">Filter options:</h2>
+        <div id="navigation-filter">
+          <div class="filter-option">
+            <input type="radio" value="all" name="filter" id="all" data-bind="checked: filter">
+            <label for="all">All</label>
+          </div>
+          <div class="filter-option">
+            <input type="radio" value="mall" name="filter" id="mall" data-bind="checked: filter">
+            <label for="mall">Mall</label>
+          </div>
+          <div class="filter-option">
+            <input type="radio" value="theme-park" name="filter" id="theme-park" data-bind="checked: filter">
+            <label for="theme-park">Theme Park</label>
+          </div>
+          <div class="filter-option">
+            <input type="radio" value="landmark" name="filter" id="landmark" data-bind="checked: filter">
+            <label for="landmark">Landmark</label>
+          </div>
+          <div class="filter-option">
+            <input type="radio" value="zoo" name="filter" id="zoo" data-bind="checked: filter">
+            <label for="zoo">Zoo</label>
+          </div>
+          <div class="filter-option">
+            <input type="radio" value="park" name="filter" id="park" data-bind="checked: filter">
+            <label for="park">Park</label>
+          </div>
         </div>
-        <div class="filter-option">
-          <input type="radio" value="mall" name="filter" id="mall" data-bind="checked: filter">
-          <label for="mall">Mall</label>
-        </div>
-        <div class="filter-option">
-          <input type="radio" value="theme-park" name="filter" id="theme-park" data-bind="checked: filter">
-          <label for="theme-park">Theme Park</label>
-        </div>
-        <div class="filter-option">
-          <input type="radio" value="landmark" name="filter" id="landmark" data-bind="checked: filter">
-          <label for="landmark">Landmark</label>
-        </div>
-        <div class="filter-option">
-          <input type="radio" value="zoo" name="filter" id="zoo" data-bind="checked: filter">
-          <label for="zoo">Zoo</label>
-        </div>
-        <div class="filter-option">
-          <input type="radio" value="park" name="filter" id="park" data-bind="checked: filter">
-          <label for="park">Park</label>
+
+        <h2 class="navigation-heading">Spots:</h2>
+        <div id="navigation-list-container">
+
+          <ul id="navigation-list" data-bind="foreach: spots">
+            <li class="navigation-list-item" data-bind="text: name, click: $parent.infowindowOpen, css: { selected: $parent.selectedSpot() === $data }"></li>
+          </ul>
+
         </div>
       </div>
-      <h2 class="navigation-heading">Spots:</h2>
-      <div id="navigation-list-container">
-        <ul id="navigation-list" data-bind="foreach: spots">
-          <li class="navigation-list-item" data-bind="text: name, click: $parent.infowindowOpen, css: { selected: $parent.selectedSpot() === $data }"></li>
-        </ul>
-      </div>
+
     </div>
   </body>
   <script src="js/lib/jquery/jquery-1.11.3.min.js"></script>

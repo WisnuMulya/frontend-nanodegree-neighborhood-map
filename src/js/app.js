@@ -76,13 +76,17 @@ function init() {
 
   // Function to show infowindow content when triggered and select list item in nav
   var infowindowOpen = function(spotObject, vm) {
+    // Setting animation
     spotObject.marker.setAnimation(google.maps.Animation.BOUNCE);
     setTimeout(function() {
       spotObject.marker.setAnimation(null);
     }, 1500);
-    var flickrStrings = '';
-    map.panTo(spotObject.marker.getPosition());
+
+    var flickrStrings = ''; // Variable to be used when Flickr callback function is called
+    map.panTo(spotObject.marker.getPosition()); // Center map to the spot highlighted
     infowindow.open(map, spotObject.marker);
+
+    // Update infowindow content title
     vm.selectedSpot(spotObject);
     vm.infowindowTitle(spotObject.name);
 
@@ -93,7 +97,7 @@ function init() {
       url: wikiUrl,
       dataType: 'jsonp',
       success: function(data) {
-        if (data[2].length > 0 && data[2][0] !== '') {
+        if (data[2].length > 0 && data[2][0] !== '') { // Check whether Wikipedia has descriptions
           vm.infowindowWikiDesc(data[2][0]);
         } else {
           vm.infowindowWikiDesc('Wikipedia does not have any description about this spot.');
@@ -108,7 +112,7 @@ function init() {
       format: 'json',
       tags: spotObject.name
     }, function(data) {
-      if (data.items.length > 0) {
+      if (data.items.length > 0) { // Check whether Flickr has images
         data.items.forEach(function(photo){
           flickrStrings = flickrStrings + '<a class="flick-img-container" target="_blank" href="' + photo.link +'"><img class="flickr-img" src="' + photo.media.m + '"></a>';
         });
@@ -128,6 +132,7 @@ function init() {
     this.position = spotObj.position;
     this.type = spotObj.type;
 
+    // Different icons for different types of spot
     var icon = {
       'landmark': 'flag_maps.png',
       'park': 'parks_maps.png',
@@ -158,8 +163,11 @@ function init() {
     var self = this;
 
     self.query = ko.observable(''); // Value of navigation-search
-    self.selectedSpot = ko.observable(null);
-    self.filter = ko.observable('all');
+    self.selectedSpot = ko.observable(null); // Value of spot highlighted
+    self.filter = ko.observable('all'); // Value of filter checked
+    self.menuClass = ko.observable('hidden'); // Value of whether menu is shown
+
+    // Binding of infowindow content
     self.infowindowTitle = ko.observable('Loading...');
     self.infowindowFlickr = ko.observable('Loading...');
     self.infowindowWikiDesc = ko.observable('Loading...');
@@ -171,6 +179,7 @@ function init() {
       };
     });
 
+    // Binding of spots inside navigation list in menu
     self.jakartaSpots = ko.computed(function() {
       var localStorageCopy = JSON.parse(localStorage.locations);
       var array = [];
@@ -205,18 +214,28 @@ function init() {
       infowindowOpen(spotObj, self);
     };
 
+    self.toggleMenu = function() {
+      self.menuClass(self.menuClass() === ''? 'hidden' : '');
+    };
+
     // Callback to make selectedSpot observable to be null when infowindow is closed
     google.maps.event.addListener(infowindow, 'closeclick', function() {
       self.selectedSpot(null);
     });
   };
-  var ifInfowindowLoaded = false;
+
+  // Initialize viewModel object
   var vmObject = new viewModel();
-  ko.applyBindings(vmObject);
+
+  // Bind infowindow content to viewModel
+  var ifInfowindowLoaded = false;
   google.maps.event.addListener(infowindow, 'domready', function() {
     if (!ifInfowindowLoaded) {
       ko.applyBindings(vmObject, document.getElementById('infowindow-content'));
       ifInfowindowLoaded = true;
     }
   });
+
+  // Bind viewModel to view
+  ko.applyBindings(vmObject);
 }
