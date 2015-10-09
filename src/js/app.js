@@ -1,20 +1,35 @@
+/**
+ * @fileOverview app.js contains functions to initialize Neighborhood Map App. The initialization starts when <tt>initializeApp</tt> function gets called by Google Maps API.
+ * @author Wisnu Mulya
+ */
+
 'use strict';
 
-// Run function when page loaded to initialize app
+/**
+ * Initializes the whole functionalities of Neighborhood Map application by creating localStorage data with <tt>createLocalStorage</tt> when there is none and then call <tt>initializeFunctionalities</tt> to initializes the main functionalities of the app.
+ * @see createLocalStorage
+ * @see initializeFunctionalities
+ */
 function initializeApp() {
   if (!localStorage.locations || (JSON.parse(localStorage.locations).length < 16)) {
     createLocalStorage();
     setTimeout(init, 1000); // Wait for the localStorage to be built
   } else {
-    initFunctions();
+    initializeFunctionalities();
   }
 };
 
-// Create local storage data when there's none or when the data is not complete
+/**
+ * Create a localStorage data of places whose location acquired through AJAX call to Google Geocoding API.
+ */
 function createLocalStorage() {
-  localStorage.locations = '[]'; // Initialize localStorage array
-  var localStorageObject;
+  localStorage.locations = '[]';      // Initialize localStorage array
+  var localStorageObject;             // Variable to store data from Google Geocoding AJAX call to be then store in localStorage.
 
+  /**
+   * @constant places Places to be inserted in localStorage as data.
+   * @memberof createLocalStorage
+   */
   var places = [
     {"name": "Satriamandala Museum", "type": "landmark"},
     {"name": "Taman Suropati", "type": "park"},
@@ -50,8 +65,10 @@ function createLocalStorage() {
 };
 
 
-// Initialize app functionalities
-function initFunctions() {
+/**
+ * Initialize the functionalities of the app and initialize viewModel bindings of knockout to the view and localStorage.
+ */
+function initializeFunctionalities() {
   // Variable to center the position of the map at initialization
   var jakarta = {name: "jakarta", position: {lat: -6.2087634, lng: 106.845599}};
 
@@ -74,21 +91,27 @@ function initFunctions() {
     maxWidth: 400
   });
 
-  // Function to show infowindow content when triggered and select list item in nav
+  /**
+   * Open infowindow above a marker of the selected spot.
+   * @param {object} spotObject Object of the selected spot.
+   * @param {object} vm Object of viewModel binded to infowindow content.
+   * @see initializeFunctionalities~Spot
+   * @see initializeFunctionalities~viewModel.self.infowindowOpen
+   * @memberOf initializeFunctionalities
+   */
   var infowindowOpen = function(spotObject, vm) {
-    // Setting animation
+    // Setting animation of the marker
     spotObject.marker.setAnimation(google.maps.Animation.BOUNCE);
     setTimeout(function() {
       spotObject.marker.setAnimation(null);
     }, 1500);
 
-    var flickrStrings = ''; // Variable to be used when Flickr callback function is called
-    map.panTo(spotObject.marker.getPosition()); // Center map to the spot highlighted
+    var flickrStrings = '';                         // Variable to be used when Flickr callback function is called
+    map.panTo(spotObject.marker.getPosition());     // Center map to the spot highlighted
     infowindow.open(map, spotObject.marker);
 
-    // Update infowindow content title
-    vm.selectedSpot(spotObject);
-    vm.infowindowTitle(spotObject.name);
+    vm.selectedSpot(spotObject);                    // Toggle selected css class to navigation list item whose spot is selected
+    vm.infowindowTitle(spotObject.name);            // Update infowindow content title
 
     // Requesting wikiSpotUrl and wikiDesc
     var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + spotObject.name + ' &format=json&callback=wikiCallBack';
@@ -97,13 +120,13 @@ function initFunctions() {
       url: wikiUrl,
       dataType: 'jsonp',
       success: function(data) {
-        if (data[2].length > 0 && data[2][0] !== '') { // Check whether Wikipedia has descriptions
-          vm.infowindowWikiDesc(data[2][0]);
+        if (data[2].length > 0 && data[2][0] !== '') {  // Check whether Wikipedia has descriptions
+          vm.infowindowWikiDesc(data[2][0]);            // Set infowindow description
         } else {
           vm.infowindowWikiDesc('Wikipedia does not have any description about this spot.');
         }
       }
-    }).error(function() {
+    }).error(function() {                               // Error listener
       vm.infowindowWikiDesc('There is an error on fetching Wikipedia info.');
     });
 
@@ -112,25 +135,45 @@ function initFunctions() {
       format: 'json',
       tags: spotObject.name
     }, function(data) {
-      if (data.items.length > 0) { // Check whether Flickr has images
-        data.items.forEach(function(photo){
+      if (data.items.length > 0) {                      // Check whether Flickr has images
+        data.items.forEach(function(photo){             // Loop data to concatenate to flickrStrings variable
           flickrStrings = flickrStrings + '<a class="flick-img-container" target="_blank" href="' + photo.link +'"><img class="flickr-img" src="' + photo.media.m + '"></a>';
         });
 
-        vm.infowindowFlickr(flickrStrings);
+        vm.infowindowFlickr(flickrStrings);             // Set infowindow Flickr images section
       } else {
         vm.infowindowFlickr('Flickr does not have images of this spot.')
       }
-    }).error(function() {
+    }).error(function() {                               // Error listener
       vm.infowindowFlickr('<p>There is something wrong; Flickr could not be loaded</p>');
     });
   };
 
-  // Pseudoclassical class for initializing each spot
-  var Spot = function(spotObj, vm) {
-    this.name = spotObj.name;
-    this.position = spotObj.position;
-    this.type = spotObj.type;
+  /**
+   * Creates a new instance of class Spot inside viewModel.
+   * @class Represents a spot.
+   * @param {object} spotObject A spot object that contains name, location, and type.
+   * @param {object} vm A viewModel object that is put to be a closure variable when Spot.marker is clicked
+   * @see initializeFunctionalities~viewModel
+   */
+  var Spot = function(spotObject, vm) {
+    /**
+     * The name of the spot.
+     * @type {string}
+     */
+    this.name = spotObject.name;
+
+    /**
+     * The latitude and longitude position of the spot.
+     * @type {object}
+     */
+    this.position = spotObject.position;
+
+    /**
+     * The type of the spot.
+     * @type {string}
+     */
+    this.type = spotObject.type;
 
     // Different icons for different types of spot
     var icon = {
@@ -141,7 +184,10 @@ function initFunctions() {
       'theme-park': 'arts_maps.png'
     };
 
-    // Initializing marker
+    /**
+     * The marker object of the spot
+     * @type {object}
+     */
     this.marker = new google.maps.Marker({
       position: this.position,
       map: null,
@@ -158,19 +204,73 @@ function initFunctions() {
     })(this, vm));
   };
 
-  // Object to initialize knockout.js functionality
+  /**
+   * Creates a new instance of class viewModel.
+   * @class Represents a viewModel for KnockoutJS binding.
+   */
   var viewModel = function() {
     var self = this;
 
-    self.query = ko.observable(''); // Value of navigation-search
-    self.selectedSpot = ko.observable(null); // Value of spot highlighted
-    self.filter = ko.observable('all'); // Value of filter checked
-    self.menuClass = ko.observable('hidden'); // Value of whether menu is shown
+    /**
+     * Observable of navigation search input.
+     * @type {string}
+     * @memberOf initializeFunctionalities~viewModel
+     */
+    self.query = ko.observable('');
 
-    // Binding of infowindow content
+    /**
+     * Observable of the selected spot.
+     * @type {object}
+     * @memberOf initializeFunctionalities~viewModel
+     */
+    self.selectedSpot = ko.observable(null);
+
+    /**
+     * Observable of radio input in the filter section of navigation.
+     * @type {string}
+     * @memberOf initializeFunctionalities~viewModel
+     */
+    self.filter = ko.observable('all');
+
+    /**
+     * Observable to determine the visibility of the menu.
+     * @type {string}
+     * @memberOf initializeFunctionalities~viewModel
+     */
+    self.menuClass = ko.observable('hidden');
+
+    /**
+     * Observable to determine infowindow title.
+     * @type {string}
+     * @memberOf initializeFunctionalities~viewModel
+     * @see initializeFunctionalities~viewModel.self.infowindowContent
+     */
     self.infowindowTitle = ko.observable('Loading...');
+
+    /**
+     * Observable to determine infowindow Flickr section.
+     * @type {string}
+     * @memberOf initializeFunctionalities~viewModel
+     * @see initializeFunctionalities~viewModel.self.infowindowContent
+     */
     self.infowindowFlickr = ko.observable('Loading...');
+
+    /**
+     * Observable to determine infowindow Wikipedia description.
+     * @type {string}
+     * @memberOf initializeFunctionalities~viewModel
+     * @see initializeFunctionalities~viewModel.self.infowindowContent
+     */
     self.infowindowWikiDesc = ko.observable('Loading...');
+
+    /**
+     * Computed observable to binding to infowindow content.
+     * @type {object}
+     * @memberOf initializeFunctionalities~viewModel
+     * @see initializeFunctionalities~viewModel.self.infowindowTitle
+     * @see initializeFunctionalities~viewModel.self.infowindowFlickr
+     * @see initializeFunctionalities~viewModel.self.infowindowWikiDesc
+     */
     self.infowindowContent = ko.computed(function() {
       return {
         title: self.infowindowTitle(),
@@ -179,7 +279,12 @@ function initFunctions() {
       };
     });
 
-    // Binding of spots inside navigation list in menu
+    /**
+     * Computed observable to determine possible spots to show in navigation.
+     * @type {array}
+     * @memberOf initializeFunctionalities~viewModel
+     * @see initializeFunctionalities~viewModel.self.spots
+     */
     self.jakartaSpots = ko.computed(function() {
       var localStorageCopy = JSON.parse(localStorage.locations);
       var array = [];
@@ -190,10 +295,17 @@ function initFunctions() {
       return array;
     });
 
-    // Create search functionality on spots
+    /**
+     * Computed observable to determine spots to be shown in the list in navigation.
+     * @type {string}
+     * @memberOf initializeFunctionalities~viewModel
+     * @see initializeFunctionalities~viewModel.self.jakartaSpots
+     * @see initializeFunctionalities~viewModel.self.query
+     * @see initializeFunctionalities~viewModel.self.filter
+     */
     self.spots = ko.computed(function() {
-      var search = this.query().toLowerCase();
-      var array = this.filter() === 'all'?
+      var search = this.query().toLowerCase();      // Search term
+      var array = this.filter() === 'all'?          // Produce filtered array based on search term and type of spot checked
         ko.utils.arrayFilter(this.jakartaSpots(), function(spot) {return spot.name.toLowerCase().indexOf(search) >= 0}) :
         ko.utils.arrayFilter(this.jakartaSpots(), function(spot) {return ((spot.name.toLowerCase().indexOf(search) >= 0) && (spot.type === self.filter()))});
 
@@ -209,11 +321,20 @@ function initFunctions() {
       return array;
     }, self);
 
-    // Callback to click of navigation list item
+    /**
+     * Function to be called when marker or navigation spot list clicked.
+     * @param {object} spotObj Spot object that is clicked.
+     * @memberOf initializeFunctionalities~viewModel
+     * @see initializeFunctionalities~Spot
+     */
     self.infowindowOpen = function(spotObj) {
       infowindowOpen(spotObj, self);
     };
 
+    /**
+     * Function to be called when menu icon is clicked to toggle menu.
+     * @memberOf initializeFunctionalities~viewModel
+     */
     self.toggleMenu = function() {
       self.menuClass(self.menuClass() === ''? 'hidden' : '');
     };
@@ -224,8 +345,7 @@ function initFunctions() {
     });
   };
 
-  // Initialize viewModel object
-  var vmObject = new viewModel();
+  var vmObject = new viewModel();                   // Initialize viewModel object
 
   // Bind infowindow content to viewModel
   var ifInfowindowLoaded = false;
@@ -236,6 +356,5 @@ function initFunctions() {
     }
   });
 
-  // Bind viewModel to view
-  ko.applyBindings(vmObject);
+  ko.applyBindings(vmObject);                       // Bind viewModel to view
 }
