@@ -27,6 +27,7 @@
     "watch:styles": "onchange src/css/*.css --npm run build:styles",
     "prebuild:scripts": "rm -rf dist/js",
     "build:scripts": "mkdir dist/js && cp -r src/js/lib dist/js && for file in src/js/*.js; do uglifyjs $file -o ${file/src/dist}; done",
+    "postbuild:scripts": "jsdoc src/js/app.js -d ./jsdoc",
     "watch:scripts": "onchange src/js/*.js -- npm run build:scripts",
     "watch": "parallelshell 'npm run watch:markups' 'npm run watch:styles' 'npm run watch:scripts'",
     "serve": "http-server -p 8080 dist/",
