@@ -1,15 +1,15 @@
 # Front-end Nanodegree Neighborhood Map project
 
 ## Getting Started
-1. Clone the repo to your local machine. Go to the directory where you want to put the repo and run this:
+* Clone the repo to your local machine. Go to the directory where you want to put the repo and run this:
 ```bash
 $> git clone git@github.com:WisnuMulya/frontend-nanodegree-neighborhood-map.git
 ```
-2. Start a local server while also watching changes in the src directory by running the following in this project root directory:
+* Start a local server while also watching changes in the src directory by running the following in this project root directory:
 ```bash
 $> npm run dev
 ```
-3. Build a production version of this project from the source version by running the following in this project root directory:
+* Build a production version of this project from the source version by running the following in this project root directory:
 ```bash
 $> npm run build
 ```
