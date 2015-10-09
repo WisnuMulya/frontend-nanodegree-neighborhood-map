@@ -18,6 +18,10 @@ h1 {
   width: 100%;
 }
 
+#menu-icon {
+  cursor: pointer;
+}
+
 #navigation {
   color: white;
   position: absolute;
