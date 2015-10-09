@@ -75,8 +75,12 @@ function init() {
 
   // Function to show infowindow content when triggered and select list item in nav
   var infowindowOpen = function(spotObject, vm) {
+    spotObject.marker.setAnimation(google.maps.Animation.BOUNCE);
+    setTimeout(function() {
+      spotObject.marker.setAnimation(null);
+    }, 1500);
     var flickrStrings = '';
-    map.panTo(spotObject.marker.getPosition())
+    map.panTo(spotObject.marker.getPosition());
     infowindow.open(map, spotObject.marker);
     vm.selectedSpot(spotObject);
     vm.infowindowTitle(spotObject.name);
@@ -136,7 +140,8 @@ function init() {
       position: this.position,
       map: null,
       title: this.name,
-      icon: 'https://maps.google.com/mapfiles/kml/shapes/' + icon[this.type]
+      icon: 'https://maps.google.com/mapfiles/kml/shapes/' + icon[this.type],
+      animation: google.maps.Animation.DROP
     });
 
     // Listen to click to open infowindow
