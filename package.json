@@ -3,7 +3,6 @@
     "clean-css": "latest",
     "html-minifier": "latest",
     "http-server": "latest",
-    "livereload": "latest",
     "onchange": "latest",
     "opener": "latest",
     "parallelshell": "latest",
@@ -32,7 +31,6 @@
     "watch": "parallelshell 'npm run watch:markups' 'npm run watch:styles' 'npm run watch:scripts'",
     "serve": "http-server -p 8080 dist/",
     "open": "opener http://localhost:8080",
-    "livereload": "livereload dist/",
-    "dev": "parallelshell 'npm run livereload' 'npm run serve' 'npm run open' 'npm run watch'"
+    "dev": "parallelshell 'npm run serve' 'npm run open' 'npm run watch'"
   }
 }
