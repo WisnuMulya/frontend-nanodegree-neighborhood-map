@@ -1,14 +1,14 @@
 'use strict';
 
 // Run function when page loaded to initialize app
-$(function() {
+function initializeApp() {
   if (!localStorage.locations || (JSON.parse(localStorage.locations).length < 16)) {
     createLocalStorage();
     setTimeout(init, 1000); // Wait for the localStorage to be built
   } else {
-    init();
+    initFunctions();
   }
-});
+};
 
 // Create local storage data when there's none or when the data is not complete
 function createLocalStorage() {
@@ -51,7 +51,7 @@ function createLocalStorage() {
 
 
 // Initialize app functionalities
-function init() {
+function initFunctions() {
   // Variable to center the position of the map at initialization
   var jakarta = {name: "jakarta", position: {lat: -6.2087634, lng: 106.845599}};
 
