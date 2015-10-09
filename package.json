@@ -16,5 +16,23 @@
   "os": [
     "darwin",
     "linux"
-  ]
+  ],
+  "scripts": {
+    "prebuild": "rm -rf dist/*",
+    "build": "npm run build:markups & npm run build:styles & npm run build:scripts",
+    "prebuild:markups": "rm -f dist/*.html",
+    "build:markups": "for file in src/*.html; do html-minifier -o ${file/src/dist} --remove-comments --remove-comments-from-cdata --collapse-whitespace --minify-js --minify-css $file; done",
+    "watch:markups": "onchange src/*.html -- npm run build:markups",
+    "prebuild:styles": "rm -f dist/css",
+    "build:styles": "mkdir dist/css && for file in src/css/*.css; do cleancss -o ${file/src/dist} $file; done",
+    "watch:styles": "onchange src/css --npm run build:styles",
+    "prebuild:scripts": "rm -rf dist/js",
+    "build:scripts": "mkdir dist/js && cp -r src/js/lib dist/js && for file in src/js/*.js; do uglifyjs $file -o ${file/src/dist}; done",
+    "watch:scripts": "onchange src/js -- npm run build:scripts",
+    "watch": "parallelshell 'npm run watch:markups' 'npm run watch:styles' 'npm run watch:scripts'",
+    "serve": "http-server -p 8080 dist/",
+    "open": "opener http://localhost:8080",
+    "livereload": "livereload dist/",
+    "dev": "parallelshell 'npm run livereload' 'npm run serve' 'npm run open' 'npm run watch'"
+  }
 }
