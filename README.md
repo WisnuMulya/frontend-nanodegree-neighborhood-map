@@ -1,17 +1,26 @@
 # Front-end Nanodegree Neighborhood Map project
 
 ## Getting Started
+Make sure you have the followings installed in your system:
+* Node JS: download the installer from [this link](https://nodejs.org/en/download/).
+* NPM : installed when you install Node.
+
+### How to install this project
 * Clone the repo to your local machine. Go to the directory where you want to put the repo and run this:
 ```bash
 $> git clone git@github.com:WisnuMulya/frontend-nanodegree-neighborhood-map.git
 ```
-* Start a local server while also watching changes in the src directory by running the following in this project root directory:
+* Install NPM modules for task runner (you might use sudo if you run any error in installing)
 ```bash
-$> npm run dev
+$> sudo npm install
 ```
 * Build a production version of this project from the source version by running the following in this project root directory:
 ```bash
 $> npm run build
+```
+* Start a local server while also watching changes in the src directory by running the following in this project root directory:
+```bash
+$> npm run dev
 ```
 
 ## Description
