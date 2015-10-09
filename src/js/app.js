@@ -70,7 +70,8 @@ function init() {
   infowindowElem += '<div data-bind="html: flickrImg"></div></div>';
 
   var infowindow = new google.maps.InfoWindow({
-    content: infowindowElem
+    content: infowindowElem,
+    maxWidth: 400
   });
 
   // Function to show infowindow content when triggered and select list item in nav

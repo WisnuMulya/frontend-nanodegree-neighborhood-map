@@ -71,6 +71,11 @@ h1 {
   background: #222;
 }
 
+#infowindow-content {
+  max-height: 30vh;
+  overflow: scroll;
+}
+
 .flick-img-container {
   display: inline-block;
   border: 1px solid black;
