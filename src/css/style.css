@@ -144,3 +144,13 @@ h1 {
     padding: 10px 5px;
   }
 }
+
+@media (max-width: 480px) and (orientation: portrait) {
+  #navigation {
+    bottom: 0;
+  }
+
+  .navigation-list-container {
+    height: 20vh;
+  }
+}
