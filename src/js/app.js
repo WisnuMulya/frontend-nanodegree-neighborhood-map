@@ -5,6 +5,13 @@
 
 'use strict';
 
+// Handling error for Google Maps implementation
+setTimeout(function() {
+  if (!window.google || !window.google.maps) {
+    $('#map').html('<h1>There seems to be an error in loading Google Maps.</h1>');
+  }
+}, 8000);
+
 /**
  * Initializes the whole functionalities of Neighborhood Map application by creating localStorage data with <tt>createLocalStorage</tt> when there is none and then call <tt>initializeFunctionalities</tt> to initializes the main functionalities of the app.
  * @see createLocalStorage

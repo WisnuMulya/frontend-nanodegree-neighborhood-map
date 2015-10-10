@@ -59,3 +59,4 @@ This project shows some interest spots of my city neighborhood, Jakarta, by mark
 * Learn filtering spots from search box from [here](http://jsfiddle.net/mythical/XJEzc/).
 * [Flickr Public Feeds API](https://www.flickr.com/services/feeds/docs/photos_public/)
 * [Wikipedia API](https://www.mediawiki.org/wiki/API:Main_page)
+* [Google Maps Handling Error](http://stackoverflow.com/questions/14687237/google-maps-api-async-loading);
