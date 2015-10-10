@@ -13,7 +13,7 @@
 function initializeApp() {
   if (!localStorage.locations || (JSON.parse(localStorage.locations).length < 16)) {
     createLocalStorage();
-    setTimeout(init, 1000); // Wait for the localStorage to be built
+    setTimeout(initializeFunctionalities, 500); // Wait for the localStorage to be built
   } else {
     initializeFunctionalities();
   }
