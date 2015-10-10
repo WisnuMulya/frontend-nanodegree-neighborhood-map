@@ -28,7 +28,7 @@ h1 {
   right: 0;
   min-width: 30vw;
   max-width: 275px;
-  max-height: 70vh;
+  max-height: 100vh;
   padding: 10px;
 }
 
@@ -116,4 +116,31 @@ h1 {
 /* Class to be toggled when hamburger icon is clicked */
 .hidden {
   display: none;
+}
+
+@media (max-width: 767px) {
+  h1 {
+    font: bold 1.25rem sans-serif;
+  }
+
+  #navigation {
+    font: .75rem sans-serif;
+    max-width: 60vw;
+  }
+
+  .navigation-heading {
+    margin: 5px 0;
+  }
+
+  .filter-option {
+    height: 1.5em;
+  }
+
+  #navigation-list-container {
+    height: 35vh;
+  }
+
+  .navigation-list-item {
+    padding: 10px 5px;
+  }
 }
