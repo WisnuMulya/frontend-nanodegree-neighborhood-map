@@ -98,7 +98,6 @@ function initializeFunctionalities() {
       spotObject.marker.setAnimation(null);
     }, 1500);
 
-    var flickrStrings = '';                         // Variable to be used when Flickr callback function is called
     map.panTo(spotObject.marker.getPosition());     // Center map to the spot highlighted
     infowindow.open(map, spotObject.marker);
 
@@ -127,6 +126,7 @@ function initializeFunctionalities() {
       format: 'json',
       tags: spotObject.name
     }, function(data) {
+      var flickrStrings = '';                           // Variable to store photos html strings
       if (data.items.length > 0) {                      // Check whether Flickr has images
         data.items.forEach(function(photo){             // Loop data to concatenate to flickrStrings variable
           flickrStrings = flickrStrings + '<a class="flick-img-container" target="_blank" href="' + photo.link +'"><img class="flickr-img" src="' + photo.media.m + '"></a>';
@@ -134,7 +134,7 @@ function initializeFunctionalities() {
 
         vm.infowindowFlickr(flickrStrings);             // Set infowindow Flickr images section
       } else {
-        vm.infowindowFlickr('Flickr does not have images of this spot.')
+        vm.infowindowFlickr('Flickr does not have images of this spot.');
       }
     }).error(function() {                               // Error listener
       vm.infowindowFlickr('<p>There is something wrong; Flickr could not be loaded</p>');
@@ -297,7 +297,7 @@ function initializeFunctionalities() {
      */
     self.spots = ko.computed(function() {
       var search = this.query().toLowerCase();      // Search term
-      var array = this.filter() === 'all'?          // Produce filtered array based on search term and type of spot checked
+      var storedSpots = this.filter() === 'all'?          // Produce filtered array based on search term and type of spot checked
         ko.utils.arrayFilter(this.jakartaSpots(), function(spot) {return spot.name.toLowerCase().indexOf(search) >= 0}) :
         ko.utils.arrayFilter(this.jakartaSpots(), function(spot) {return ((spot.name.toLowerCase().indexOf(search) >= 0) && (spot.type === self.filter()))});
 
@@ -306,11 +306,11 @@ function initializeFunctionalities() {
         spot.marker.setMap(null);
       });
 
-      array.forEach(function(spot) {
+      storedSpots.forEach(function(spot) {
         spot.marker.setMap(map);
       });
 
-      return array;
+      return storedSpots;
     }, self);
 
     /**
