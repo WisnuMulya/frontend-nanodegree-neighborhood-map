@@ -64,12 +64,12 @@ function initializeFunctionalities() {
   });
 
   // Initializing infowindow to be shown above the map markers
-  var infowindowElem = '<div id="infowindow-content" data-bind="with: infowindowContent">';
-  infowindowElem += '<h1 data-bind="text: title"></h1>';
-  infowindowElem += '<h2>Wikipedia Description:</h2>';
-  infowindowElem += '<p data-bind="text: wikiDesc"></p>';
-  infowindowElem += '<h2>Flickr Images:</h2>';
-  infowindowElem += '<div data-bind="html: flickrImg"></div></div>';
+  var infowindowElem = '<div id="infowindow-content" data-bind="with: infowindowContent">' +
+    '<h1 data-bind="text: title"></h1>' +
+    '<h2>Wikipedia Description:</h2>' +
+    '<p data-bind="text: wikiDesc"></p>' +
+    '<h2>Flickr Images:</h2>' +
+    '<div data-bind="html: flickrImg"></div></div>';
 
   var infowindow = new google.maps.InfoWindow({
     content: infowindowElem,
